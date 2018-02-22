@@ -1,17 +1,20 @@
+const BLANK_BOARD = [
+  [null, null, null, null, null, null],
+  [null, null, null, null, null, null],
+  [null, null, null, null, null, null],
+  [null, null, null, null, null, null],
+  [null, null, null, null, null, null],
+  [null, null, null, null, null, null],
+  [null, null, null, null, null, null]];
+
 function Game () {
-  this.board = [
-    [null, null, null, null, null, null],
-    [null, null, null, null, null, null],
-    [null, null, null, null, null, null],
-    [null, null, null, null, null, null],
-    [null, null, null, null, null, null],
-    [null, null, null, null, null, null],
-    [null, null, null, null, null, null]];
+  this.board = BLANK_BOARD;
 
   this.columns = document.querySelectorAll('.col');
   this.currentPlayer = 'blue';
 }
 
+// Drop peg if valid move, otherwise alert and try again
 Game.prototype.dropPeg = function (col) {
   let i = this.board[col].length - 1;
   if (this.board[col][0]) {
@@ -25,6 +28,15 @@ Game.prototype.dropPeg = function (col) {
 
   this.board[col][i] = this.currentPlayer;
   this.columns[col].children[i].style.background = this.currentPlayer;
+
+  if (this.gameWon()) {
+    const player = this.currentPlayer;
+    // Use event loop to ensure peg is dropped before alert is called
+    setTimeout(function () {
+      alert(player[0].toUpperCase() + player.slice(1) + ' wins!');
+    }, 0);
+    return;
+  }
   this.switchPlayers();
   return true;
 };
@@ -33,10 +45,45 @@ Game.prototype.switchPlayers = function () {
   this.currentPlayer = this.currentPlayer === 'red' ? 'blue' : 'red';
 };
 
+// Reset game
+Game.prototype.reset = function () {
+  this.board = BLANK_BOARD;
+  this.currentPlayer = 'blue';
+};
+
+// Win logic
+Game.prototype.gameWon = function () {
+  const board = this.board;
+  const player = this.currentPlayer;
+
+  function rowWin () {
+  }
+  
+  function colWin () {
+    let win = false;
+    board.forEach(function (row) {
+      for (let i = 0; i <= row.length - 4; i++) {
+        if (row.slice(i, i + 4).every(el => el === player)) {
+          win = true;
+        }
+      }
+    });
+    return win;
+  }
+
+  function diagWin () {
+
+  }
+
+  return rowWin() || colWin() || diagWin();
+};
+
 const game = new Game();
 const dropFields = document.querySelector('.drop-col');
 const pegs = dropFields.querySelectorAll('div');
 
+
+// Drop peg on column click and show piece hover above column
 game.columns.forEach(col => {
   col.addEventListener('click', function (e) {
     if (game.dropPeg(parseInt(col.dataset.column))) {
@@ -62,6 +109,7 @@ game.columns.forEach(col => {
   });
 });
 
+// Show piece hover above column
 dropFields.addEventListener('mouseover', function (e) {
   if (e.target.dataset.hcolumn) {
     pegs.forEach(function (peg) {
@@ -80,6 +128,7 @@ dropFields.addEventListener('mouseout', function (e) {
   }
 });
 
+// Drop peg on click above column
 dropFields.addEventListener('click', function(e) {
   if (e.target.dataset.hcolumn) {
     if (game.dropPeg(parseInt(e.target.dataset.hcolumn))) {
