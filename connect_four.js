@@ -57,6 +57,15 @@ Game.prototype.gameWon = function () {
   const player = this.currentPlayer;
 
   function rowWin () {
+    for (let row = 0; row < board[0].length; row++) {
+      for (let i = 0; i <= board.length - 4; i++) {
+        let test = [board[i][row], board[i + 1][row], board[i + 2][row], board[i + 3][row]];
+        if (test.every(el => el === player)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
   
   function colWin () {
@@ -65,6 +74,7 @@ Game.prototype.gameWon = function () {
       for (let i = 0; i <= row.length - 4; i++) {
         if (row.slice(i, i + 4).every(el => el === player)) {
           win = true;
+          return;
         }
       }
     });
