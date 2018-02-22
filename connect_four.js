@@ -15,7 +15,8 @@ function Game () {
 Game.prototype.dropPeg = function (col) {
   let i = this.board[col].length - 1;
   if (this.board[col][0]) {
-    return alert('Invalid move');
+    alert('Invalid move');
+    return false;
   }
   
   while (this.board[col][i]) {
@@ -25,6 +26,7 @@ Game.prototype.dropPeg = function (col) {
   this.board[col][i] = this.currentPlayer;
   this.columns[col].children[i].style.background = this.currentPlayer;
   this.switchPlayers();
+  return true;
 };
 
 Game.prototype.switchPlayers = function () {
@@ -32,21 +34,38 @@ Game.prototype.switchPlayers = function () {
 };
 
 const game = new Game();
+const dropFields = document.querySelector('.drop-col');
+const pegs = dropFields.querySelectorAll('div');
 
 game.columns.forEach(col => {
   col.addEventListener('click', function (e) {
-    return game.dropPeg(parseInt(col.dataset.column));
+    if (game.dropPeg(parseInt(col.dataset.column))) {
+      pegs[parseInt(col.dataset.column)]
+        .style.background = game.currentPlayer;
+    }
+  });
+
+  col.addEventListener('mouseover', function (e) {
+    pegs.forEach(function (peg) {
+      peg.style.background = 'white';
+    });
+    pegs[parseInt(e.currentTarget.dataset.column)]
+      .style.background = game.currentPlayer;
+  });
+
+  col.addEventListener('mouseout', function (e) {
+    if (!e.toElement.dataset.column) {
+      pegs.forEach(function (peg) {
+        peg.style.background = 'white';
+      });
+    }
   });
 });
 
-const dropFields = document.querySelector('.drop-col');
-
 dropFields.addEventListener('mouseover', function (e) {
   if (e.target.dataset.hcolumn) {
-    const pegs = dropFields.querySelectorAll('div');
     pegs.forEach(function (peg) {
       peg.style.background = 'white';
-      // return;
     });
     pegs[parseInt(e.target.dataset.hcolumn)]
       .style.background = game.currentPlayer;
@@ -55,16 +74,17 @@ dropFields.addEventListener('mouseover', function (e) {
 
 dropFields.addEventListener('mouseout', function (e) {
   if (!e.toElement.dataset.hcolumn) {
-    const pegs = dropFields.querySelectorAll('div');
     pegs.forEach(function (peg) {
       peg.style.background = 'white';
-      return;
     });
   }
 });
 
 dropFields.addEventListener('click', function(e) {
   if (e.target.dataset.hcolumn) {
-    return game.dropPeg(parseInt(e.target.dataset.hcolumn));
+    if (game.dropPeg(parseInt(e.target.dataset.hcolumn))) {
+      pegs[parseInt(e.target.dataset.hcolumn)]
+        .style.background = game.currentPlayer;
+    }
   }
 });
