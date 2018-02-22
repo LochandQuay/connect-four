@@ -1,13 +1,22 @@
 h1 {
   text-align: center;
-  margin-top: 50px;
-  margin-bottom: 20px;
-  font-size: 40px;
+  margin-top: 40px;
+  margin-bottom: 10px;
+  color: black;
+  font-size: 60px;
+  font-family: Helvetica, sans-serif;
+}
+
+h1 > span {
+  font-size: 100px;
+  line-height: 60px;
+  color: tomato;
+  font-weight: bold;
 }
 
 #board {
   width: 725px;
-  border: 1px solid black;
+  border: 1px solid gray;
   padding: 25px;
   margin: 0 auto;
   background: khaki;
@@ -37,7 +46,7 @@ h1 {
 }
 
 .drop-col {
-  widows: 725px;
+  /* width: 725px; */
   margin: 0 auto;
   padding: 0;
   list-style: none;
@@ -62,7 +71,18 @@ h1 {
   box-sizing: border-box;
 }
 
-.hovered {
-  border: 1px solid gray;
-  background: blue;
+#reset {
+  width: 50px;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 10px 15px;
+  margin: 25px auto;
+  font-size: 20px;
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+}
+
+#reset:hover {
+  border-color: tomato;
+  color: tomato;
 }

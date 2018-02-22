@@ -1,14 +1,16 @@
-const BLANK_BOARD = [
-  [null, null, null, null, null, null],
-  [null, null, null, null, null, null],
-  [null, null, null, null, null, null],
-  [null, null, null, null, null, null],
-  [null, null, null, null, null, null],
-  [null, null, null, null, null, null],
-  [null, null, null, null, null, null]];
+function blankBoard () {
+  return ([
+    [null, null, null, null, null, null],
+    [null, null, null, null, null, null],
+    [null, null, null, null, null, null],
+    [null, null, null, null, null, null],
+    [null, null, null, null, null, null],
+    [null, null, null, null, null, null],
+    [null, null, null, null, null, null]]);
+}
 
 function Game () {
-  this.board = BLANK_BOARD;
+  this.board = blankBoard();
 
   this.columns = document.querySelectorAll('.col');
   this.currentPlayer = 'blue';
@@ -47,8 +49,12 @@ Game.prototype.switchPlayers = function () {
 
 // Reset game
 Game.prototype.reset = function () {
-  this.board = BLANK_BOARD;
+  this.board = blankBoard();
   this.currentPlayer = 'blue';
+
+  document.querySelectorAll('.square').forEach(function (square) {
+    square.style.background = 'white';
+  });
 };
 
 // Win logic
@@ -146,4 +152,8 @@ dropFields.addEventListener('click', function(e) {
         .style.background = game.currentPlayer;
     }
   }
+});
+
+document.getElementById('reset').addEventListener('click', function (e) {
+  return game.reset();
 });
