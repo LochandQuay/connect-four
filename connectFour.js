@@ -103,7 +103,6 @@ Game.prototype.gameWon = function () {
       for (let j = 0; j <= board[i].length - 4; j++) {
         let test = [board[i][j], board[i - 1][j + 1],
         board[i - 2][j + 2], board[i - 3][j + 3]];
-        console.log(test);
         
         if (test.every(el => el === player)) {
           return true;
