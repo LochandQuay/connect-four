@@ -88,7 +88,30 @@ Game.prototype.gameWon = function () {
   }
 
   function diagWin () {
+    // Check [1, 1] deltas
+    for (let i = 0; i <= board.length - 4; i++) {
+      for (let j = 0; j <= board[i].length - 4; j++) {
+        let test = [board[i][j], board[i + 1][j + 1], 
+          board[i + 2][j + 2], board[i + 3][j + 3]];
+        if (test.every(el => el === player)) {
+          return true;
+        }
+      }
+    }
+    // Check [-1, 1] deltas
+    for (let i = board.length - 1; i >= board.length - 4; i--) {
+      for (let j = 0; j <= board[i].length - 4; j++) {
+        let test = [board[i][j], board[i - 1][j + 1],
+        board[i - 2][j + 2], board[i - 3][j + 3]];
+        console.log(test);
+        
+        if (test.every(el => el === player)) {
+          return true;
+        }
+      }
+    }
 
+    return false;
   }
 
   return rowWin() || colWin() || diagWin();
